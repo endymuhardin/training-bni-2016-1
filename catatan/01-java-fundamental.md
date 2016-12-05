@@ -39,11 +39,11 @@ Classpath bisa diset dengan beberapa cara:
 
 * menggunakan environment variable
 
-    CLASSPATH=/folder/yang/berisi/class java belajar.java.Halo
+        CLASSPATH=/folder/yang/berisi/class java belajar.java.Halo
 
 * menggunakan opsi `-cp`
 
-    java -cp /folder/yang/berisi/class belajar.java.Halo
+        java -cp /folder/yang/berisi/class belajar.java.Halo
 
 Selain menunjuk ke lokasi folder, CLASSPATH juga bisa diarahkan ke file `jar`. Contohnya:
 
@@ -55,9 +55,9 @@ CLASSPATH juga bisa menunjuk ke beberapa lokasi sekaligus. Contohnya:
 
 * di Windows
 
-    CLASSPATH=c:/coba.jar;c:/Users/endy/halo-java/hasil java belajar.java.Halo
+        CLASSPATH=c:/coba.jar;c:/Users/endy/halo-java/hasil java belajar.java.Halo
 
 * di *Nix
 
-    CLASSPATH=/home/endy/coba.jar:/tmp/halo-java/hasil java belajar.java.Halo
+        CLASSPATH=/home/endy/coba.jar:/tmp/halo-java/hasil java belajar.java.Halo
 
