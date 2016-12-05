@@ -61,3 +61,22 @@ CLASSPATH juga bisa menunjuk ke beberapa lokasi sekaligus. Contohnya:
 
         CLASSPATH=/home/endy/coba.jar:/tmp/halo-java/hasil java belajar.java.Halo
 
+## Packing ##
+
+Kode program yang sudah dicompile didistribusikan dalam format `jar`. File `jar` sebetulnya adalah file `zip` biasa, sehingga bisa dibuat dengan aplikasi kompresi apa saja. Walaupun demikian, ada beberapa hal yang harus diperhatikan:
+
+* Algoritma yang digunakan harus `zip`. Tidak boleh `rar` atau yang lainnya.
+* File kompresi harus langsung berisi folder package. Tidak boleh ada folder induknya lagi. Misalnya, bila class kita ada dalam package `belajar.java`, maka begitu file `zip` diextract, isinya haruslah folder `belajar`
+
+Untuk mengecek isi file `jar` bisa menggunakan perintah berikut:
+
+```
+jar tvf namafile.jar
+```
+
+Outputnya seperti ini
+
+```
+     0 Mon Dec 05 19:25:58 WIB 2016 coba/
+   416 Mon Dec 05 19:25:58 WIB 2016 coba/Kalkulator.class
+```
