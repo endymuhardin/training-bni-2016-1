@@ -26,46 +26,54 @@ Flow request yang melewati Spring MVC bisa dilihat pada gambar berikut
 
 1. Tambahkan dependensi di `pom.xml`
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
+    ```xml
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    ```
 
 2. Buat class `@Controller`
 
-        @Controller
-        public class PesertaController {
+    ```java
+    @Controller
+    public class PesertaController {
     
-            @RequestMapping("/peserta/registrasi/")
-            public void registrasi(){}
-        }
+        @RequestMapping("/peserta/registrasi/")
+        public void registrasi(){}
+    }
+    ```
 
 3. Buat template untuk layout dalam folder `src/main/resources/templates`
 
-        <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    ```html
+    <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
         ....
 
-            <div layout:fragment="content">
-            </div>
+        <div layout:fragment="content">
+        </div>
 
         ....
 
-        </html>
+    </html>
+    ```
 
 4. Buat page untuk screen aplikasi
 
-        <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    ```html
+    <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
         ....
             
-          <div layout:fragment="content">
+        <div layout:fragment="content">
             <h1>Registrasi Peserta</h1>
-          </div>
+        </div>
 
         ....
 
-        </html>
+    </html>
+    ```
 
 # Referensi #
 
