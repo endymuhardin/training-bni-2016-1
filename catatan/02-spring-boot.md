@@ -22,6 +22,35 @@ Flow request yang melewati Spring MVC bisa dilihat pada gambar berikut
 
 ![Flow request Spring MVC](flow-request-springmvc.jpg)
 
+## Memasang Thymeleaf Layout ##
+
+1. Tambahkan dependensi di `pom.xml`
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+2. Buat class `@Controller`
+
+        @Controller
+        public class PesertaController {
+    
+            @RequestMapping("/peserta/registrasi/")
+            public void registrasi(){}
+        }
+
+3. Buat template untuk layout dalam folder `src/main/resources/templates`
+
+        <div layout:fragment="content">
+        </div>
+
+4. Buat page untuk screen aplikasi
+
+        <div layout:fragment="content">
+            <h1>Registrasi Peserta</h1>
+        </div>
+
 # Referensi #
 
 * [Dokumentasi Spring Boot](http://docs.spring.io/spring-boot/docs/current/reference/html/)
