@@ -42,14 +42,30 @@ Flow request yang melewati Spring MVC bisa dilihat pada gambar berikut
 
 3. Buat template untuk layout dalam folder `src/main/resources/templates`
 
-        <div layout:fragment="content">
-        </div>
+        <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+        ....
+
+            <div layout:fragment="content">
+            </div>
+
+        ....
+
+        </html>
 
 4. Buat page untuk screen aplikasi
 
-        <div layout:fragment="content">
+        <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+        ....
+            
+          <div layout:fragment="content">
             <h1>Registrasi Peserta</h1>
-        </div>
+          </div>
+
+        ....
+
+        </html>
 
 # Referensi #
 
