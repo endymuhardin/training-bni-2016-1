@@ -2,16 +2,20 @@ package com.brainmatics.pelatihan.controller;
 
 import com.brainmatics.pelatihan.dao.PesertaDao;
 import com.brainmatics.pelatihan.entity.Peserta;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 public class PesertaController {
@@ -54,7 +58,12 @@ public class PesertaController {
     }
     
     @RequestMapping(value = "/peserta/form/", method = RequestMethod.POST)
-    public String prosesForm(){
+    public String prosesForm(@ModelAttribute @Valid Peserta p, BindingResult errors, SessionStatus status){
+        if(errors.hasErrors()) {
+            return "/peserta/form";
+        }
+        
+        status.setComplete();
         return "redirect:/peserta/list/";
     }
 }
