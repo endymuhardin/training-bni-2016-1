@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -35,6 +36,19 @@ public class PesertaController {
     public ModelMap daftarPeserta(Pageable page){
         ModelMap data = new ModelMap();
         data.put("daftarPeserta", pesertaDao.findAll(page));
+        return data;
+    }
+    
+    @RequestMapping("/peserta/form/")
+    public ModelMap tampilkanForm(@RequestParam(required = false, name = "id") Peserta p){
+        ModelMap data = new ModelMap();
+        
+        if(p == null){
+            p = new Peserta();
+        }
+        
+        data.put("peserta", p);
+        
         return data;
     }
 }
