@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -39,7 +40,7 @@ public class PesertaController {
         return data;
     }
     
-    @RequestMapping("/peserta/form/")
+    @RequestMapping(value = "/peserta/form/", method = RequestMethod.GET)
     public ModelMap tampilkanForm(@RequestParam(required = false, name = "id") Peserta p){
         ModelMap data = new ModelMap();
         
@@ -50,5 +51,10 @@ public class PesertaController {
         data.put("peserta", p);
         
         return data;
+    }
+    
+    @RequestMapping(value = "/peserta/form/", method = RequestMethod.POST)
+    public String prosesForm(){
+        return "redirect:/peserta/list/";
     }
 }
