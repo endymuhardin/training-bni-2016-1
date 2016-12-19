@@ -37,7 +37,7 @@ public class PesertaController {
     @RequestMapping(value = "/api/peserta/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void simpanPeserta(@RequestBody @Valid Peserta p){
-        // simpan ke db
+        pesertaDao.save(p);
     }
     
     @RequestMapping("/api/peserta/{id}/")
@@ -71,7 +71,7 @@ public class PesertaController {
         if(errors.hasErrors()) {
             return "/peserta/form";
         }
-        
+        pesertaDao.save(p);
         status.setComplete();
         return "redirect:/peserta/list/";
     }
