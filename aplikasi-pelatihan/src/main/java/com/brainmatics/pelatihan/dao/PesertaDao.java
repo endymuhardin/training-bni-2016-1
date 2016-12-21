@@ -7,4 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface PesertaDao extends PagingAndSortingRepository<Peserta, String>{
     public Page<Peserta> findByNamaContaining(String keyword, Pageable page);
+    public Peserta findByEmail(String email);
 }

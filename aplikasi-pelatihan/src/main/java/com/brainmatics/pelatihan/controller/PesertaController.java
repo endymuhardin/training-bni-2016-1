@@ -77,6 +77,11 @@ public class PesertaController {
     
     @RequestMapping(value = "/peserta/form/", method = RequestMethod.POST)
     public String prosesForm(@ModelAttribute @Valid Peserta p, BindingResult errors, SessionStatus status, @RequestParam MultipartFile foto){
+        Peserta px = pesertaDao.findByEmail(p.getEmail());
+        if(px != null){
+            errors.rejectValue("email", "email.unique", "Alamat email sudah dipakai");
+        }
+        
         if(errors.hasErrors()) {
             return "/peserta/form";
         }
