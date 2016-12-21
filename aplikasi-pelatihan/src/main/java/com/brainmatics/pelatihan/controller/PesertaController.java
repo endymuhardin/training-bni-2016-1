@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class PesertaController {
@@ -75,12 +76,25 @@ public class PesertaController {
     }
     
     @RequestMapping(value = "/peserta/form/", method = RequestMethod.POST)
-    public String prosesForm(@ModelAttribute @Valid Peserta p, BindingResult errors, SessionStatus status){
+    public String prosesForm(@ModelAttribute @Valid Peserta p, BindingResult errors, SessionStatus status, @RequestParam MultipartFile foto){
         if(errors.hasErrors()) {
             return "/peserta/form";
         }
+        
+        prosesFoto(foto);
+        
         pesertaDao.save(p);
         status.setComplete();
         return "redirect:/peserta/list/";
+    }
+    
+    private void prosesFoto(MultipartFile foto){
+        // tampilkan informasi
+        System.out.println("Nama file : "+foto.getOriginalFilename());
+        System.out.println("Jenis file : "+foto.getContentType());
+        System.out.println("Ukuran file : "+foto.getSize());
+        
+        // best practices : simpan file di file server, jangan di local file system
+        // contoh : upload ke Amazon S3, Dropbox, Google Drive, CDN
     }
 }
