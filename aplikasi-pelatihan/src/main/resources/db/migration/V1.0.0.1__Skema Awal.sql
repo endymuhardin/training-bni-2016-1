@@ -20,19 +20,32 @@ create table t_peserta (
 );
 
 create table t_materi (
-    id VARCHAR(36), 
-    PRIMARY KEY (id)
+    id VARCHAR(36),
+    kode VARCHAR(20) NOT NULL,
+    nama VARCHAR(255) NOT NULL,
+    durasi INT NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE (kode)
 );
 
 create table t_instruktur (
-    id VARCHAR(36), 
-    PRIMARY KEY (id)
+    id VARCHAR(36),
+    email VARCHAR(255) NOT NULL,
+    nama VARCHAR(255) NOT NULL,
+    nomor_handphone VARCHAR(255),
+    PRIMARY KEY (id),
+    UNIQUE (email)
 );
 
 create table t_kelas (
     id VARCHAR(36), 
-    id_instruktur VARCHAR(36) not null, 
+    id_instruktur VARCHAR(36) not null,
+    kode VARCHAR(20) NOT NULL,
+    nama VARCHAR(255) NOT NULL,
+    tanggal_mulai DATE NOT NULL,
+    tanggal_selesai DATE NOT NULL,
     PRIMARY KEY (id),
+    UNIQUE (kode),
     FOREIGN KEY (id_instruktur) REFERENCES t_instruktur(id)
 );
 
