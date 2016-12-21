@@ -18,6 +18,7 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr>
+                        <th>Institusi</th>
                         <th>Nama</th>
                         <th>Email</th>
                         <th>No Handphone</th>
@@ -27,6 +28,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="p : ${daftarPeserta}">
+                        <td th:text="${p.institusi} ? ${p.institusi.nama} : ''">Institusi Peserta</td>
                         <td th:text="${p.nama}">Peserta 999</td>
                         <td th:text="${p.email}">p99@gmail.com</td>
                         <td th:text="${p.nomorHandphone}">081234567890</td>

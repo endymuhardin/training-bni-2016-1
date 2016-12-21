@@ -9,6 +9,21 @@
             <h1>Entri Peserta</h1>
 
             <form class="form-horizontal" method="post" th:object="${peserta}">
+                <div class="form-group" th:classappend="${#fields.hasErrors('institusi')} ? 'has-error'">
+                    <label for="institusi" class="col-sm-2 control-label">Institusi</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="institusi" th-field="*{institusi}">
+                            <option value="">Pilih Institusi</option>
+                            <option th:each="ins : ${daftarInstitusi}"
+                                    th:value="${ins.id}"
+                                    th:text="${ins.nama}">Pilihan Institusi</option>
+                        </select>
+                        <label class="control-label" th:errors="*{institusi}">
+                            Pesan error nanti di sini
+                        </label>
+                    </div>
+                    
+                </div>
                 <div class="form-group" th:classappend="${#fields.hasErrors('nama')} ? 'has-error'">
                     <label for="nama" class="col-sm-2 control-label">Nama</label>
                     <div class="col-sm-10">

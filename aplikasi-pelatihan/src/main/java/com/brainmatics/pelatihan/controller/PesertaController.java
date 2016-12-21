@@ -1,6 +1,8 @@
 package com.brainmatics.pelatihan.controller;
 
+import com.brainmatics.pelatihan.dao.InstitusiDao;
 import com.brainmatics.pelatihan.dao.PesertaDao;
+import com.brainmatics.pelatihan.entity.Institusi;
 import com.brainmatics.pelatihan.entity.Peserta;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.support.SessionStatus;
 public class PesertaController {
     
     @Autowired private PesertaDao pesertaDao;
+    @Autowired private InstitusiDao institusiDao;
     
     @RequestMapping("/peserta/registrasi/")
     public void registrasi(){}
@@ -51,6 +54,11 @@ public class PesertaController {
         ModelMap data = new ModelMap();
         data.put("daftarPeserta", pesertaDao.findAll(page));
         return data;
+    }
+    
+    @ModelAttribute("daftarInstitusi")
+    public Iterable<Institusi> daftarInstitusi(){
+        return institusiDao.findAll();
     }
     
     @RequestMapping(value = "/peserta/form/", method = RequestMethod.GET)

@@ -83,6 +83,14 @@ public class Peserta {
     public void setTanggalLahir(Date tanggalLahir) {
         this.tanggalLahir = tanggalLahir;
     }
+
+    public Institusi getInstitusi() {
+        return institusi;
+    }
+
+    public void setInstitusi(Institusi institusi) {
+        this.institusi = institusi;
+    }
     
     
 }
