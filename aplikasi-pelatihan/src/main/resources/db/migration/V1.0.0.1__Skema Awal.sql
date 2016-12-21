@@ -69,6 +69,7 @@ create table t_kehadiran (
     id VARCHAR(36), 
     id_peserta VARCHAR(36) not null,
     id_kelas VARCHAR(36) not null,
+    tanggal_hadir DATE NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_peserta) REFERENCES t_peserta(id),
     FOREIGN KEY (id_kelas) REFERENCES t_kelas(id)

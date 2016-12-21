@@ -1,5 +1,7 @@
 package com.brainmatics.pelatihan.entity;
 
+import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -24,5 +26,43 @@ public class Kehadiran {
     @ManyToOne
     @JoinColumn(name = "id_peserta")
     private Peserta peserta;
+    
+    @NotNull
+    @Column(name = "tanggal_hadir")
+    private LocalDate tanggalHadir;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Kelas getKelas() {
+        return kelas;
+    }
+
+    public void setKelas(Kelas kelas) {
+        this.kelas = kelas;
+    }
+
+    public Peserta getPeserta() {
+        return peserta;
+    }
+
+    public void setPeserta(Peserta peserta) {
+        this.peserta = peserta;
+    }
+
+    public LocalDate getTanggalHadir() {
+        return tanggalHadir;
+    }
+
+    public void setTanggalHadir(LocalDate tanggalHadir) {
+        this.tanggalHadir = tanggalHadir;
+    }
+    
+    
     
 }

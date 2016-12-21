@@ -36,3 +36,12 @@ values ('k001', 'p001');
 
 insert into t_peserta_kelas (id_kelas, id_peserta)
 values ('k001', 'p002');
+
+insert into t_kehadiran (id, id_kelas, id_peserta, tanggal_hadir)
+values ('kd001', 'k001', 'p001', '2010-01-01');
+
+insert into t_kehadiran (id, id_kelas, id_peserta, tanggal_hadir)
+values ('kd002', 'k001', 'p001', '2010-01-03');
+
+insert into t_kehadiran (id, id_kelas, id_peserta, tanggal_hadir)
+values ('kd003', 'k001', 'p001', '2010-01-05');
