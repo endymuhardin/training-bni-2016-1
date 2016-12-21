@@ -1,6 +1,10 @@
 create table t_institusi (
     id VARCHAR(36), 
-    PRIMARY KEY (id)
+    kode VARCHAR(20) NOT NULL,
+    nama VARCHAR(255) NOT NULL,
+    alamat VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE (kode)
 );
 
 create table t_peserta (
