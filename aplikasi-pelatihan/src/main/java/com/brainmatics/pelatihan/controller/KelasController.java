@@ -13,6 +13,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -49,7 +50,7 @@ public class KelasController {
     }
     
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ModelMap daftarKelas(Pageable page){
+    public ModelMap daftarKelas(@SortDefault("tanggalMulai") Pageable page){
         return new ModelMap()
                 .addAttribute("daftarKelas", kelasDao.findAll(page));
     }

@@ -2,3 +2,15 @@ body {
   min-height: 2000px;
   padding-top: 70px;
 }
+table.table thead .sorted:after{
+    display: inline-block;
+    font-family: 'FontAwesome';
+    opacity: 0.8;
+    margin-left: 1em;
+}
+table.table thead .sorted.sorted-desc:after{
+    content: "\25BC";
+}
+table.table thead .sorted.sorted-asc:after{
+    content: "\25B2";
+}
