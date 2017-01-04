@@ -55,6 +55,11 @@ public class KelasController {
                 .addAttribute("daftarKelas", kelasDao.findAll(page));
     }
     
+    @RequestMapping(value = "/detail")
+    public ModelMap detailKelas(@RequestParam("id") Kelas kelas){
+        return new ModelMap().addAttribute("kelas", kelas);
+    }
+    
     @RequestMapping(value = "/materi", method = RequestMethod.POST)
     public String pilihMateri(@RequestParam String action,
             @RequestParam("id") Materi materi, 

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+    <head>
+        <title>Input Kelas</title> 
+    </head>
+    <body>
+        <div layout:fragment="content">
+
+
+            <h1>Detail Kelas</h1>
+
+            <form class="form-horizontal" action="form">
+                <input type="hidden" name="id" th:value="${kelas.id}"/>
+                <div class="form-group">
+                    <label for="instruktur" class="col-sm-2 control-label">Institusi</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${kelas.instruktur.nama}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="kode" class="col-sm-2 control-label">Kode Kelas</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${kelas.kode}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nama" class="col-sm-2 control-label">Nama</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${kelas.nama}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tanggalMulai" class="col-sm-2 control-label">Tanggal Mulai</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${kelas.tanggalMulai}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tanggalSelesai" class="col-sm-2 control-label">Tanggal Selesai</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${kelas.tanggalSelesai}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" value="Edit" class="btn btn-default">Edit</button>
+                        <button type="submit" value="Hapus" class="btn btn-default">Hapus</button>
+                    </div>
+                </div>
+            </form>
+
+            <hr />
+
+            <div class="col-md-6">
+                <h2>Daftar Materi</h2>
+
+                <p />
+
+                <b th:if="${kelas.daftarMateri.empty}">Belum ada materi yang dipilih</b>
+
+                <table class="table table-bordered" th:unless="${kelas.daftarMateri.empty}">
+                    <thead>
+                        <tr>
+                            <th>Materi</th>
+                            <th>Durasi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each='x : ${kelas.daftarMateri}'>
+                            <td th:text="${x.kode} + ' - ' + ${x.nama}">Java Fundamental</td>
+                            <td th:text="${x.durasi} + ' jam'">16 jam</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <h2>Daftar Peserta</h2>
+
+                <p />
+
+                <b th:if="${kelas.daftarPeserta.empty}">Belum ada peserta yang dipilih</b>
+
+                <table class="table table-bordered" th:unless="${kelas.daftarPeserta.empty}">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="x : ${kelas.daftarPeserta}">
+                            <td th:text="${x.nama}">Endy Muhardin</td>
+                            <td th:text="${x.email}">endy@muhardin.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </body>
+</html>

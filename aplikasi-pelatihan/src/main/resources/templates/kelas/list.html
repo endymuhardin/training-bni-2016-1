@@ -26,7 +26,10 @@
                         <td th:text="${k.tanggalMulai}">2017-01-01</td>
                         <td th:text="${k.tanggalSelesai}">2017-01-20</td>
                         <td>
-                            <a href="#">detail</a>
+                            <a href="#" th:href="@{/kelas/detail(id=${k.id})}" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                                detail
+                            </a>
                         </td>
                     </tr>
                 </tbody>
