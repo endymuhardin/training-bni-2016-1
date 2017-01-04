@@ -149,6 +149,7 @@ public class KelasController {
         kelas.setDaftarPeserta(pilihanPeserta);
         
         kelasDao.save(kelas);
+        status.setComplete();
         return "redirect:list";
     }
 }
