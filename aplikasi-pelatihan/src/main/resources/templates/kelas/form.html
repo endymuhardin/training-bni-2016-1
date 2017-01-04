@@ -26,7 +26,11 @@
                                         <td th:text="${m.kode} + ' - '+${m.nama}">Java Fundamental</td>
                                         <td th:text="${m.durasi} + ' jam'">16 jam</td>
                                         <td>
-                                            <button class="btn btn-sm">Pilih</button>
+                                            <form method="post" action="materi">
+                                                <input type="hidden" name="id" th:value="${m.id}"/>
+                                                <input type="hidden" name="action" th:value="'add'"/>
+                                                <button type="submit" class="btn btn-sm">Pilih</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -59,7 +63,11 @@
                                         <td th:text='${m.nama}'>Endy Muhardin</td>
                                         <td th:text='${m.email}'>endy@muhardin.com</td>
                                         <td>
-                                            <button class="btn btn-sm">Pilih</button>
+                                            <form method="post" action="peserta">
+                                                <input type="hidden" name="id" th:value="${m.id}"/>
+                                                <input type="hidden" name="action" th:value="'add'"/>
+                                                <button type="submit" class="btn btn-sm">Pilih</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -152,7 +160,7 @@
                 <p />
 
                 <b th:if="${pilihanMateri.empty}">Belum ada materi yang dipilih</b>
-                
+
                 <table class="table table-bordered" th:unless="${pilihanMateri.empty}">
                     <thead>
                         <tr>
@@ -166,7 +174,11 @@
                             <td th:text="${x.kode} + ' - ' + ${x.nama}">Java Fundamental</td>
                             <td th:text="${x.durasi} + ' jam'">16 jam</td>
                             <td>
-                                <button class="btn btn-sm">Hapus</button>
+                                <form method="post" action="materi">
+                                    <input type="hidden" name="id" th:value="${x.id}"/>
+                                    <input type="hidden" name="action" th:value="'remove'"/>
+                                    <button type="submit" class="btn btn-sm">Hapus</button>
+                                </form>
                             </td>
                         </tr>
                     </tbody>
@@ -180,7 +192,7 @@
                 <p />
 
                 <b th:if="${pilihanPeserta.empty}">Belum ada peserta yang dipilih</b>
-                
+
                 <table class="table table-bordered" th:unless="${pilihanPeserta.empty}">
                     <thead>
                         <tr>
@@ -194,7 +206,11 @@
                             <td th:text="${x.nama}">Endy Muhardin</td>
                             <td th:text="${x.email}">endy@muhardin.com</td>
                             <td>
-                                <button class="btn btn-sm">Hapus</button>
+                                <form method="post" action="peserta">
+                                    <input type="hidden" name="id" th:value="${x.id}"/>
+                                    <input type="hidden" name="action" th:value="'remove'"/>
+                                    <button type="submit" class="btn btn-sm">Hapus</button>
+                                </form>
                             </td>
                         </tr>
                     </tbody>

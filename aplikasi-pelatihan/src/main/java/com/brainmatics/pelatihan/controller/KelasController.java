@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -25,9 +26,6 @@ public class KelasController {
     @Autowired private InstrukturDao instrukturDao;
     @Autowired private MateriDao materiDao;
     @Autowired private PesertaDao pesertaDao;
-    
-    private List<Peserta> pilihanPeserta;
-    private List<Materi> pilihanMateri;
     
     @ModelAttribute("daftarMateri")
     public Iterable<Materi> daftarMateri(){
@@ -49,8 +47,52 @@ public class KelasController {
         return new ModelMap();
     }
     
+    @RequestMapping(value = "/materi", method = RequestMethod.POST)
+    public String pilihMateri(@RequestParam String action,
+            @RequestParam("id") Materi materi, 
+            @SessionAttribute("pilihanMateri") List<Materi> pilihanMateri){
+        if(materi != null){
+            for (Materi mx : pilihanMateri) {
+                if(mx.getId().equals(materi.getId())) {
+                    // bila ada dalam daftar dan action = remove, maka hapus
+                    if("remove".equalsIgnoreCase(action)) {
+                        pilihanMateri.remove(mx);
+                    }
+                    return "redirect:form";
+                }
+            }
+            if("add".equalsIgnoreCase(action)) {
+                pilihanMateri.add(materi);
+            }
+        }
+        return "redirect:form";
+    }
+    
+    @RequestMapping(value = "/peserta", method = RequestMethod.POST)
+    public String pilihPeserta(@RequestParam String action,
+            @RequestParam("id") Peserta peserta, 
+            @SessionAttribute("pilihanPeserta") List<Peserta> pilihanPeserta){
+        if(peserta != null){
+            for (Peserta mx : pilihanPeserta) {
+                if(mx.getId().equals(peserta.getId())) {
+                    // bila ada dalam daftar dan action = remove, maka hapus
+                    if("remove".equalsIgnoreCase(action)) {
+                        pilihanPeserta.remove(mx);
+                    }
+                    return "redirect:form";
+                }
+            }
+            if("add".equalsIgnoreCase(action)) {
+                pilihanPeserta.add(peserta);
+            }
+        }
+        return "redirect:form";
+    }
+    
     @RequestMapping(value = "/form", method = RequestMethod.GET)
-    public ModelMap tampilkanForm(@RequestParam(value = "id", required = false) Kelas kelas){
+    public ModelMap tampilkanForm(@RequestParam(value = "id", required = false) Kelas kelas, 
+            @SessionAttribute(value = "pilihanMateri", required = false) List<Materi> pilihanMateri, 
+            @SessionAttribute(value = "pilihanPeserta", required = false) List<Peserta> pilihanPeserta){
         if(kelas == null){
             kelas = new Kelas();
         }
