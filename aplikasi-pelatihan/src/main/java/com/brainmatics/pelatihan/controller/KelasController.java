@@ -152,4 +152,11 @@ public class KelasController {
         status.setComplete();
         return "redirect:list";
     }
+    
+    @RequestMapping(value = "/hapus", method = RequestMethod.POST)
+    public String hapus(@RequestParam("id") Kelas kelas, SessionStatus status){
+        kelasDao.delete(kelas);
+        status.setComplete();
+        return "redirect:list";
+    }
 }
