@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+    <head>
+        <title>Input Kelas</title> 
+    </head>
+    <body>
+        <div layout:fragment="content">
+
+            <div id="dialogMateri" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Daftar Materi</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Materi</th>
+                                        <th>Durasi</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="m : ${daftarMateri}">
+                                        <td th:text="${m.kode} + ' - '+${m.nama}">Java Fundamental</td>
+                                        <td th:text="${m.durasi} + ' jam'">16 jam</td>
+                                        <td>
+                                            <button class="btn btn-sm">Pilih</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <div id="dialogPeserta" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Daftar Peserta</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="m : ${daftarPeserta}">
+                                        <td th:text='${m.nama}'>Endy Muhardin</td>
+                                        <td th:text='${m.email}'>endy@muhardin.com</td>
+                                        <td>
+                                            <button class="btn btn-sm">Pilih</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+
+            <h1>Entri Kelas</h1>
+
+            <form class="form-horizontal" method="post" th:object="${kelas}">
+                <div class="form-group" th:classappend="${#fields.hasErrors('instruktur')} ? 'has-error'">
+                    <label for="instruktur" class="col-sm-2 control-label">Institusi</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="instruktur" th:field="*{instruktur}">
+                            <option value="">Pilih instruktur</option>
+                            <option th:each="ins : ${daftarInstruktur}"
+                                    th:value="${ins.id}"
+                                    th:text="${ins.nama}">Pilihan Instruktur</option>
+                        </select>
+                        <label class="control-label" th:errors="*{instruktur}">
+                            Pesan error nanti di sini
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('kode')} ? 'has-error'">
+                    <label for="kode" class="col-sm-2 control-label">Kode Kelas</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" 
+                               th:field="*{kode}"
+                               id="nama" name="kode" placeholder="Kode Kelas" />
+                        <label class="control-label" th:errors="*{kode}">
+                            Pesan error nanti di sini
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('nama')} ? 'has-error'">
+                    <label for="nama" class="col-sm-2 control-label">Nama</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" 
+                               th:field="*{nama}"
+                               id="nama" name="nama" placeholder="Nama Kelas" />
+                        <label class="control-label" th:errors="*{nama}">
+                            Pesan error nanti di sini
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('tanggalMulai')} ? 'has-error'">
+                    <label for="tanggalMulai" class="col-sm-2 control-label">Tanggal Mulai</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" 
+                               th:field="*{tanggalMulai}"
+                               id="nama" name="tanggalMulai" placeholder="Tanggal Mulai" />
+                        <label class="control-label" th:errors="*{tanggalMulai}">
+                            Pesan error nanti di sini
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('tanggalSelesai')} ? 'has-error'">
+                    <label for="tanggalSelesai" class="col-sm-2 control-label">Tanggal Selesai</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" 
+                               th:field="*{tanggalSelesai}"
+                               id="nama" name="tanggalSelesai" placeholder="Tanggal Selesai" />
+                        <label class="control-label" th:errors="*{tanggalSelesai}">
+                            Pesan error nanti di sini
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Simpan</button>
+                        <button type="reset" class="btn btn-default">Reset</button>
+                    </div>
+                </div>
+            </form>
+
+            <hr />
+
+            <div class="col-md-6">
+                <h2>Daftar Materi</h2>
+
+                <button class="btn btn-primary" data-toggle="modal" data-target="#dialogMateri">Tambah Materi</button>
+
+                <p />
+
+                <b th:if="${pilihanMateri.empty}">Belum ada materi yang dipilih</b>
+                
+                <table class="table table-bordered" th:unless="${pilihanMateri.empty}">
+                    <thead>
+                        <tr>
+                            <th>Materi</th>
+                            <th>Durasi</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each='x : ${pilihanMateri}'>
+                            <td th:text="${x.kode} + ' - ' + ${x.nama}">Java Fundamental</td>
+                            <td th:text="${x.durasi} + ' jam'">16 jam</td>
+                            <td>
+                                <button class="btn btn-sm">Hapus</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <h2>Daftar Peserta</h2>
+
+                <button class="btn btn-primary" data-toggle="modal" data-target="#dialogPeserta">Tambah Peserta</button>
+                <p />
+
+                <b th:if="${pilihanPeserta.empty}">Belum ada peserta yang dipilih</b>
+                
+                <table class="table table-bordered" th:unless="${pilihanPeserta.empty}">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="x : ${pilihanPeserta}">
+                            <td th:text="${x.nama}">Endy Muhardin</td>
+                            <td th:text="${x.email}">endy@muhardin.com</td>
+                            <td>
+                                <button class="btn btn-sm">Hapus</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </body>
+</html>
