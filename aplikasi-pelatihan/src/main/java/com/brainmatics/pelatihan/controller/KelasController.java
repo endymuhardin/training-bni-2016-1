@@ -1,6 +1,7 @@
 package com.brainmatics.pelatihan.controller;
 
 import com.brainmatics.pelatihan.dao.InstrukturDao;
+import com.brainmatics.pelatihan.dao.KelasDao;
 import com.brainmatics.pelatihan.dao.MateriDao;
 import com.brainmatics.pelatihan.dao.PesertaDao;
 import com.brainmatics.pelatihan.entity.Instruktur;
@@ -9,15 +10,18 @@ import com.brainmatics.pelatihan.entity.Materi;
 import com.brainmatics.pelatihan.entity.Peserta;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @RequestMapping("/kelas")
@@ -26,6 +30,7 @@ public class KelasController {
     @Autowired private InstrukturDao instrukturDao;
     @Autowired private MateriDao materiDao;
     @Autowired private PesertaDao pesertaDao;
+    @Autowired private KelasDao kelasDao;
     
     @ModelAttribute("daftarMateri")
     public Iterable<Materi> daftarMateri(){
@@ -108,5 +113,20 @@ public class KelasController {
         return new ModelMap("kelas", kelas)
                 .addAttribute("pilihanMateri", pilihanMateri)
                 .addAttribute("pilihanPeserta", pilihanPeserta);
+    }
+    
+    @RequestMapping(value = "/form", method = RequestMethod.POST)
+    public String prosesForm(@SessionAttribute(value = "pilihanMateri", required = false) List<Materi> pilihanMateri, 
+            @SessionAttribute(value = "pilihanPeserta", required = false) List<Peserta> pilihanPeserta, 
+            @ModelAttribute @Valid Kelas kelas, BindingResult errors, SessionStatus status){
+        if(errors.hasErrors()) {
+            return "kelas/form";
+        }
+        
+        kelas.setDaftarMateri(pilihanMateri);
+        kelas.setDaftarPeserta(pilihanPeserta);
+        
+        kelasDao.save(kelas);
+        return "redirect:list";
     }
 }

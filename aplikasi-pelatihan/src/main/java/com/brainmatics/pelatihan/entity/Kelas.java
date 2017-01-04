@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity @Table(name = "t_kelas")
 public class Kelas {
@@ -36,10 +37,12 @@ public class Kelas {
     
     @NotNull
     @Column(name = "tanggal_mulai")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate tanggalMulai;
     
     @NotNull
     @Column(name = "tanggal_selesai")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate tanggalSelesai;
     
     @NotNull
