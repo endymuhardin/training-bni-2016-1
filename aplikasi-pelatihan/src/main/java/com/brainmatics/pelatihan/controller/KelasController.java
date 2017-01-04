@@ -62,7 +62,8 @@ public class KelasController {
     
     @RequestMapping(value = "/materi", method = RequestMethod.POST)
     public String pilihMateri(@RequestParam String action,
-            @RequestParam("id") Materi materi, 
+            @RequestParam("id") Materi materi,  
+            @RequestParam("id_kelas") String idKelas,
             @SessionAttribute("pilihanMateri") List<Materi> pilihanMateri){
         if(materi != null){
             for (Materi mx : pilihanMateri) {
@@ -71,19 +72,20 @@ public class KelasController {
                     if("remove".equalsIgnoreCase(action)) {
                         pilihanMateri.remove(mx);
                     }
-                    return "redirect:form";
+                    return "redirect:form?edited=true&id="+idKelas;
                 }
             }
             if("add".equalsIgnoreCase(action)) {
                 pilihanMateri.add(materi);
             }
         }
-        return "redirect:form";
+        return "redirect:form?edited=true&id="+idKelas;
     }
     
     @RequestMapping(value = "/peserta", method = RequestMethod.POST)
     public String pilihPeserta(@RequestParam String action,
             @RequestParam("id") Peserta peserta, 
+            @RequestParam("id_kelas") String idKelas,
             @SessionAttribute("pilihanPeserta") List<Peserta> pilihanPeserta){
         if(peserta != null){
             for (Peserta mx : pilihanPeserta) {
@@ -92,20 +94,22 @@ public class KelasController {
                     if("remove".equalsIgnoreCase(action)) {
                         pilihanPeserta.remove(mx);
                     }
-                    return "redirect:form";
+                    return "redirect:form?edited=true&id="+idKelas;
                 }
             }
             if("add".equalsIgnoreCase(action)) {
                 pilihanPeserta.add(peserta);
             }
         }
-        return "redirect:form";
+        return "redirect:form?edited=true&id="+idKelas;
     }
     
     @RequestMapping(value = "/form", method = RequestMethod.GET)
     public ModelMap tampilkanForm(@RequestParam(value = "id", required = false) Kelas kelas, 
+            @RequestParam(value = "edited", required = false, defaultValue = "false") Boolean edited,
             @SessionAttribute(value = "pilihanMateri", required = false) List<Materi> pilihanMateri, 
             @SessionAttribute(value = "pilihanPeserta", required = false) List<Peserta> pilihanPeserta){
+        
         if(kelas == null){
             kelas = new Kelas();
         }
@@ -116,6 +120,16 @@ public class KelasController {
         
         if(pilihanPeserta == null){
             pilihanPeserta = new ArrayList<>();
+        }
+        
+        System.out.println("ID Kelas : "+kelas.getId());
+        System.out.println("Pilihan materi "+pilihanMateri);
+        
+        if(kelas.getId() != null){
+            if(!edited) {
+                pilihanMateri = kelas.getDaftarMateri();
+                pilihanPeserta = kelas.getDaftarPeserta();
+            }
         }
         
         return new ModelMap("kelas", kelas)

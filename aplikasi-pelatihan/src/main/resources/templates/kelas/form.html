@@ -26,8 +26,9 @@
                                         <td th:text="${m.kode} + ' - '+${m.nama}">Java Fundamental</td>
                                         <td th:text="${m.durasi} + ' jam'">16 jam</td>
                                         <td>
-                                            <form method="post" action="materi">
+                                            <form method="post" th:action="@{/kelas/materi}">
                                                 <input type="hidden" name="id" th:value="${m.id}"/>
+                                    <input type="hidden" name="id_kelas" th:value="${kelas.id}"/>
                                                 <input type="hidden" name="action" th:value="'add'"/>
                                                 <button type="submit" class="btn btn-sm">Pilih</button>
                                             </form>
@@ -63,8 +64,9 @@
                                         <td th:text='${m.nama}'>Endy Muhardin</td>
                                         <td th:text='${m.email}'>endy@muhardin.com</td>
                                         <td>
-                                            <form method="post" action="peserta">
+                                            <form method="post" th:action="@{/kelas/peserta}">
                                                 <input type="hidden" name="id" th:value="${m.id}"/>
+                                    <input type="hidden" name="id_kelas" th:value="${kelas.id}"/>
                                                 <input type="hidden" name="action" th:value="'add'"/>
                                                 <button type="submit" class="btn btn-sm">Pilih</button>
                                             </form>
@@ -174,8 +176,9 @@
                             <td th:text="${x.kode} + ' - ' + ${x.nama}">Java Fundamental</td>
                             <td th:text="${x.durasi} + ' jam'">16 jam</td>
                             <td>
-                                <form method="post" action="materi">
+                                <form method="post" th:action="@{/kelas/materi}">
                                     <input type="hidden" name="id" th:value="${x.id}"/>
+                                    <input type="hidden" name="id_kelas" th:value="${kelas.id}"/>
                                     <input type="hidden" name="action" th:value="'remove'"/>
                                     <button type="submit" class="btn btn-sm">Hapus</button>
                                 </form>
@@ -206,7 +209,8 @@
                             <td th:text="${x.nama}">Endy Muhardin</td>
                             <td th:text="${x.email}">endy@muhardin.com</td>
                             <td>
-                                <form method="post" action="peserta">
+                                <form method="post" th:action="@{/kelas/peserta}">
+                                    <input type="hidden" name="id_kelas" th:value="${kelas.id}"/>
                                     <input type="hidden" name="id" th:value="${x.id}"/>
                                     <input type="hidden" name="action" th:value="'remove'"/>
                                     <button type="submit" class="btn btn-sm">Hapus</button>
