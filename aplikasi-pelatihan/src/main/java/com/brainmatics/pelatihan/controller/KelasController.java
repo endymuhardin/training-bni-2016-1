@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -48,8 +49,9 @@ public class KelasController {
     }
     
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ModelMap daftarKelas(){
-        return new ModelMap();
+    public ModelMap daftarKelas(Pageable page){
+        return new ModelMap()
+                .addAttribute("daftarKelas", kelasDao.findAll(page));
     }
     
     @RequestMapping(value = "/materi", method = RequestMethod.POST)

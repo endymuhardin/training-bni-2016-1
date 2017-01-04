@@ -8,7 +8,29 @@
 
             <h1>Daftar Kelas</h1>
 
-            
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nama Kelas</th>
+                        <th>Instruktur</th>
+                        <th>Tanggal Mulai</th>
+                        <th>Tanggal Selesai</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr th:each="k : ${daftarKelas}">
+                        <td th:text="${k.kode} + ' - '+ ${k.nama}">K-001 : Kelas 001</td>
+                        <td th:text="${k.instruktur.nama}">Endy Muhardin</td>
+                        <td th:text="${k.tanggalMulai}">2017-01-01</td>
+                        <td th:text="${k.tanggalSelesai}">2017-01-20</td>
+                        <td>
+                            <a href="#">detail</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
         </div>
     </body>
