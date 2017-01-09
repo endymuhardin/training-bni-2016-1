@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -49,6 +50,7 @@ public class KelasController {
         return instrukturDao.findAll();
     }
     
+    @PreAuthorize("hasRole('VIEW_KELAS')")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelMap daftarKelas(@SortDefault("tanggalMulai") Pageable page){
         return new ModelMap()
@@ -104,6 +106,7 @@ public class KelasController {
         return "redirect:form?edited=true&id="+idKelas;
     }
     
+    @PreAuthorize("hasRole('EDIT_KELAS')")
     @RequestMapping(value = "/form", method = RequestMethod.GET)
     public ModelMap tampilkanForm(@RequestParam(value = "id", required = false) Kelas kelas, 
             @RequestParam(value = "edited", required = false, defaultValue = "false") Boolean edited,
