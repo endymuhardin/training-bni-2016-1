@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -29,6 +30,7 @@ public class PesertaController {
     @Autowired private PesertaDao pesertaDao;
     @Autowired private InstitusiDao institusiDao;
     
+    @PreAuthorize("isAnonymous()")
     @RequestMapping("/peserta/registrasi/")
     public void registrasi(){}
     
@@ -38,6 +40,7 @@ public class PesertaController {
         return pesertaDao.findAll(page);
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/api/peserta/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void simpanPeserta(@RequestBody @Valid Peserta p){
@@ -50,6 +53,7 @@ public class PesertaController {
         return peserta;
     }
     
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping("/peserta/list/")
     public ModelMap daftarPeserta(Pageable page){
         ModelMap data = new ModelMap();
@@ -62,6 +66,7 @@ public class PesertaController {
         return institusiDao.findAll();
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/peserta/form/", method = RequestMethod.GET)
     public ModelMap tampilkanForm(@RequestParam(required = false, name = "id") Peserta p){
         ModelMap data = new ModelMap();
