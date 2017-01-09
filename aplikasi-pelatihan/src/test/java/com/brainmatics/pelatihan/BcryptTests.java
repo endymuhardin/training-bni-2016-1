@@ -10,7 +10,11 @@ public class BcryptTests {
     public void testBcrypt(){
         System.out.println("Password : 1234");
         String hasil = new BCryptPasswordEncoder().encode("1234");
+        
         System.out.println("Hasil : "+hasil);
-        Assert.assertTrue(true);
+        
+        // cara membandingkan plain password dengna hasil hash
+        // jangan pakai equals, karena hasil encode berbeda setiap kali dijalankan
+        Assert.assertTrue(new BCryptPasswordEncoder().matches("1234", hasil));
     }
 }
