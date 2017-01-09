@@ -85,7 +85,8 @@
 
             <h1>Entri Kelas</h1>
 
-            <form class="form-horizontal" method="post" th:object="${kelas}">
+            <form class="form-horizontal" method="post" th:action="@{/kelas/form}" th:object="${kelas}">
+                <input type="hidden" th:field="*{id}"/>
                 <div class="form-group" th:classappend="${#fields.hasErrors('instruktur')} ? 'has-error'">
                     <label for="instruktur" class="col-sm-2 control-label">Institusi</label>
                     <div class="col-sm-10">
