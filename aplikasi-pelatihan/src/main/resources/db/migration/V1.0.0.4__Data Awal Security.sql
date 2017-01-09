@@ -11,16 +11,16 @@ insert into s_role (id, nama, label)
 values ('r002', 'SUPERVISOR', 'Supervisor');
 
 insert into s_permission (id, nama, label)
-values ('p001', 'ROLE_VIEW_KELAS', 'Melihat data kelas');
+values ('p001', 'VIEW_KELAS', 'Melihat data kelas');
 
 insert into s_permission (id, nama, label)
-values ('p002', 'ROLE_EDIT_KELAS', 'Mengubah data kelas');
+values ('p002', 'EDIT_KELAS', 'Mengubah data kelas');
 
 insert into s_permission (id, nama, label)
-values ('p003', 'ROLE_VIEW_PESERTA', 'Melihat data peserta');
+values ('p003', 'VIEW_PESERTA', 'Melihat data peserta');
 
 insert into s_permission (id, nama, label)
-values ('p004', 'ROLE_EDIT_PESERTA', 'Mengubah data peserta');
+values ('p004', 'EDIT_PESERTA', 'Mengubah data peserta');
 
 insert into s_user_role (id_user, id_role) 
 values ('u001', 'r001');

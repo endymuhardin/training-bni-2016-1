@@ -50,7 +50,7 @@ public class KelasController {
         return instrukturDao.findAll();
     }
     
-    @PreAuthorize("hasRole('VIEW_KELAS')")
+    @PreAuthorize("hasAuthority('VIEW_KELAS')")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelMap daftarKelas(@SortDefault("tanggalMulai") Pageable page){
         return new ModelMap()
@@ -106,7 +106,7 @@ public class KelasController {
         return "redirect:form?edited=true&id="+idKelas;
     }
     
-    @PreAuthorize("hasRole('EDIT_KELAS')")
+    @PreAuthorize("hasAuthority('EDIT_KELAS')")
     @RequestMapping(value = "/form", method = RequestMethod.GET)
     public ModelMap tampilkanForm(@RequestParam(value = "id", required = false) Kelas kelas, 
             @RequestParam(value = "edited", required = false, defaultValue = "false") Boolean edited,

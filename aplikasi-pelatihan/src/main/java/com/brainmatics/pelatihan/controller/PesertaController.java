@@ -40,7 +40,7 @@ public class PesertaController {
         return pesertaDao.findAll(page);
     }
     
-    @PreAuthorize("hasRole('EDIT_PESERTA')")
+    @PreAuthorize("hasAuthority('EDIT_PESERTA')")
     @RequestMapping(value = "/api/peserta/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void simpanPeserta(@RequestBody @Valid Peserta p){
@@ -53,7 +53,7 @@ public class PesertaController {
         return peserta;
     }
     
-    @PreAuthorize("hasRole('VIEW_PESERTA')")
+    @PreAuthorize("hasAuthority('VIEW_PESERTA')")
     @RequestMapping("/peserta/list/")
     public ModelMap daftarPeserta(Pageable page){
         ModelMap data = new ModelMap();
