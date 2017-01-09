@@ -30,7 +30,9 @@ public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .and()
-                .formLogin();
+                .formLogin().loginPage("/login")
+                .failureUrl("/login-error")
+                .permitAll();
     }
 
     @Override
