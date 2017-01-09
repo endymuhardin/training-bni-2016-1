@@ -1,8 +1,8 @@
 insert into s_user (id, username, password, active)
-values ('u001', 'endy', '1234', true);
+values ('u001', 'endy', '$2a$10$wifPPl.XwOUwwtt2llVWpu.SEUWMuulT.H9XpY3lWEWeogIujKYkm', true);
 
 insert into s_user (id, username, password, active)
-values ('u002', 'bob', '4321', true);
+values ('u002', 'bob', '$2a$06$E.6uipRLinndikp93KHqwuONfHEVKQaUFOnRE7/HGhG/KLdlikF6m', true);
 
 insert into s_role (id, nama, label)
 values ('r001', 'STAFF', 'Staf Administrasi');
