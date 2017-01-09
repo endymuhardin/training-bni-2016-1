@@ -66,7 +66,7 @@ public class PesertaController {
         return institusiDao.findAll();
     }
     
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('EDIT_PESERTA')")
     @RequestMapping(value = "/peserta/form/", method = RequestMethod.GET)
     public ModelMap tampilkanForm(@RequestParam(required = false, name = "id") Peserta p){
         ModelMap data = new ModelMap();
