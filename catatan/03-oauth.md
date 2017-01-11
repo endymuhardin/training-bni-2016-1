@@ -118,3 +118,64 @@ Beberapa cara verifikasi token dari resource server ke authorization server:
       "client_id" : "clientcred"
     }
     ```
+
+## JSON Web Token ##
+
+Tujuannya adalah supaya auth server tidak terus-menerus ditanyai untuk keperluan :
+
+* verifikasi token
+* meminta informasi tentang user
+
+JWT adalah token yang berisi informasi tentang user dan memiliki digital signature sehingga bisa diverifikasi bahwa isinya tidak diubah ditengah jalan.
+
+Konfigurasinya di Spring Security dilakukan dengan mengubah baris berikut
+
+
+```java
+@Override
+public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    endpoints
+    .tokenStore(new InMemoryTokenStore())
+    .authenticationManager(authenticationManager);
+}
+```
+
+menjadi seperti ini
+
+```java
+@Override
+public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    endpoints
+    .accessTokenConverter(jwtAccessTokenConverter())
+    .authenticationManager(authenticationManager);
+}
+```
+
+Tentunya kita harus sediakan `jwtAccessTokenConverter` sebagai berikut
+
+```java
+@Bean
+public JwtAccessTokenConverter jwtAccessTokenConverter() {
+    JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+    converter.setSigningKey("123"); // gunakan symmetric key
+    return converter;
+}
+```
+
+Konfigurasi di atas dilakukan dengan `symmetric key`. Jadi di aplikasi resource server juga harus memiliki `key` yang sama (yaitu `123`) untuk bisa memverifikasi signature dari token JWT tersebut.
+
+Setelah dilakukan perubahan, token yang kita dapatkan menjadi seperti ini
+
+```json
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiYXBsaWthc2l0cmFpbmluZyJdLCJ1c2VyX25hbWUiOiJlbmR5Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sImV4cCI6MTQ4NDE4NzYzNiwiYXV0aG9yaXRpZXMiOlsiRURJVF9LRUxBUyIsIkVESVRfUEVTRVJUQSIsIlZJRVdfUEVTRVJUQSIsIlZJRVdfS0VMQVMiXSwianRpIjoiNDRjZDhhYTctZDNiYy00N2RmLTg5MGItMWQ3MTcyZWE4YjJiIiwiY2xpZW50X2lkIjoiY2xpZW50YXBwIn0.afIrpeD_IB-olXcv416MNMFyT-JMFCz8w639_r-V8bg",
+    "token_type": "bearer",
+    "expires_in": 43199,
+    "scope": "read write",
+    "jti": "44cd8aa7-d3bc-47df-890b-1d7172ea8b2b"
+}
+```
+
+JWT ini bisa diverifikasi di website [jwt.io](https://jwt.io/) seperti ini
+
+![Verifikasi JWT](img/screenshot-jwtio.png)
