@@ -11,10 +11,10 @@ Beberapa istilah:
 
 Beberapa flow yang tersedia:
 
-* Authorization Code
-* Implicit
-* User Password
-* Client Credential
+* Authorization Code : digunakan bila client app adalah aplikasi server side (Java, PHP, Ruby, Python, NodeJS, what have you) dan bisa menyimpan `client_secret` atau lazim juga disebut dengan istilah `API Key`. Bila aplikasi client menggunakan flow ini, kita bisa mengidentifikasi aplikasi mana saja yang mengakses aplikasi kita.
+* Implicit : digunakan bila aplikasi client tidak bisa menyimpan `client_secret`. Biasanya karena aplikasinya berjalan di sisi user seperti misalnya aplikasi client-side JavaScript([Angular](https://angular.io), [Vue](https://vuejs.org/), [EmberJS](http://emberjs.com/), dsb).
+* User Password : digunakan bila kita mengijinkan user untuk menginputkan username dan passwordnya di aplikasi client. Ini biasanya dilakukan bila aplikasi client kita juga yang membuat, seperti misalnya aplikasi Twitter, Facebook, dsb yang dibuat sendiri oleh Twitter, Facebook, dsb.
+* Client Credential : digunakan untuk akses host to host antar aplikasi. Flow ini biasanya digunakan untuk fitur yang tidak spesifik ke user tertentu, misalnya trending topic di social media. Datanya global dan tidak terkait ke user tertentu.
 
 ### Authorization Code ###
 
