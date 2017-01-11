@@ -66,7 +66,7 @@ Beberapa cara verifikasi token dari resource server ke authorization server:
 
 * Mendapatkan `access_token`
 
-    curl http://localhost:10000/auth/oauth/authorize?client_id=jsclient&response_type=token&scope=write
+    curl http://localhost:10000/auth/oauth/authorize?client_id=jsclient&response_type=token&scope=write 
 
 * Kita akan diredirect ke `http://example.com/#access_token=70322d66-6c76-4fe0-9786-622a9a314261&token_type=bearer&expires_in=86399`, sesuai dengan konfigurasi redirect_uri di konfigurasi client.
 
