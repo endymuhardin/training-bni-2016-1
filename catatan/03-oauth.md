@@ -179,3 +179,60 @@ Setelah dilakukan perubahan, token yang kita dapatkan menjadi seperti ini
 JWT ini bisa diverifikasi di website [jwt.io](https://jwt.io/) seperti ini
 
 ![Verifikasi JWT](img/screenshot-jwtio.png)
+
+
+### JWT dengan Asymmetric Key ###
+
+Asymmetric key adalah pasangan public key dan private key. Private key hanya ada di auth server, digunakan untuk melakukan signature. Public key dibagikan ke semua aplikasi, digunakan untuk verifikasi signature.
+
+* Membuat keypair dan menyimpannya di keystore.
+
+        keytool -genkeypair -alias jwt -keyalg RSA -dname "CN=Endy Muhardin, OU=Belajar JWT, O=ArtiVisi, L=Jakarta, ST=Jakarta, C=ID" -keypass rahasia -keystore src/main/resources/jwt.jks -storepass rahasia
+
+* Konfigurasi auth server supaya menggunakan keystore tersebut. Ganti baris ini
+
+    ```java
+    converter.setSigningKey("123"); // gunakan symmetric key
+    ```
+    menjadi
+    ```java
+    KeyPair keyPair = new KeyStoreKeyFactory(
+                    new ClassPathResource("jwt.jks"), "rahasia".toCharArray())
+                    .getKeyPair("jwt");
+    converter.setKeyPair(keyPair);
+    ```
+
+* Agar public key bisa diakses, konfigurasi ijin aksesnya seperti ini
+
+    ```java
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+        oauthServer.checkTokenAccess("hasAuthority('CLIENT')")
+                .tokenKeyAccess("permitAll()");
+    }
+    ```
+
+* Public key dari keypair tersebut bisa diakses di `http://localhost:10000/auth/oauth/token_key`. Hasilnya adalah sebagai berikut
+
+    ```json
+    {
+      "alg" : "SHA256withRSA",
+      "value" : "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA48IlRzLq12IIsmI1wo+yRe5DIrfr8aSKdmVtoO0QVwXaX/Cj21oPWglX45nCGNHOxN71l/wTEtP/Csy4+SaCE5/5uS1wcjQZnh8lCBizR6FLuVFgk4Xzxxz3erK9Uokf29PZ/is5a2msaECSAfMYDqLbyuhaDinvBDoDX+VgsU1rXlomvjINDsVEsM8JIYdcSotgvXgEe+UpaIAgHLl54vlUFMNaUoSsPnMXX5XnjRJXPeA2BMa9OOBGu4ty1aCcp2i06eRai8q4mTjp/XJ4Y1l4MZ2tWHCGaraWd7mfPsQIWQRc9KMat7hTrGb8xKuCRkmVyP7/wb9GdAu/168dJwIDAQAB\n-----END PUBLIC KEY-----"
+    }
+    ```
+
+* JWT yang dihasilkan dengan Asymmetric key sebagai berikut
+
+    ```json
+    {
+        "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiYXBsaWthc2l0cmFpbmluZyJdLCJ1c2VyX25hbWUiOiJlbmR5Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sImV4cCI6MTQ4NDE4ODgzOSwiYXV0aG9yaXRpZXMiOlsiRURJVF9LRUxBUyIsIkVESVRfUEVTRVJUQSIsIlZJRVdfUEVTRVJUQSIsIlZJRVdfS0VMQVMiXSwianRpIjoiMThiMmViNzYtYzJjMC00YTIxLThhMjUtNTdiNGY4MDBhNmRhIiwiY2xpZW50X2lkIjoiY2xpZW50YXBwIn0.buBY0sI4UwbsVTQTeyw4S_FsDI7s8qT3YvuOh-8HbWguvrU9TAK9fZQLhklez55xpZm5icQEB9DGRQoxE-hV9_3PT0DH5jAZ3ubdzARlec_L7hyOjJ8SmQyseMemMruT2GDA1vzmq1PQpP2PZ69ygS5DgYD-UsErRLzTSnWSFkjkpfT36nBUL8FZz0szg417PPcKHvefnwKqH0sakyNNTqzER8P0ALNoLDeUZuT73HOY-DPRJhHxHRtJuw_5J_5odvhKidjioeUH3o8Aw2KY7-9hVxdQaorgA-mJV3Mpk_99q0F3YoWfLWzaO3aaadwlLswWIlDr_uLyFxK37JeV_w",
+        "token_type": "bearer",
+        "expires_in": 43199,
+        "scope": "read write",
+        "jti": "18b2eb76-c2c0-4a21-8a25-57b4f800a6da"
+    }
+    ```
+
+* Kita bisa verifikasi signaturenya di jwt.io seperti biasa. Copy paste public key dari `http://localhost:10000/auth/oauth/token_key` tadi ke kolom bawah. Jangan lupa ganti `\n` menjadi ganti baris (tekan Enter)
+
+![Verifikasi Signature dengan Public Key](img/verifikasi-public-key.png)

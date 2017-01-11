@@ -1,10 +1,12 @@
 package com.brainmatics.pelatihan;
 
+import java.security.KeyPair;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +19,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 @EnableWebSecurity
 public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
@@ -85,13 +88,18 @@ public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
         @Bean
         public JwtAccessTokenConverter accessTokenConverter() {
             JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-            converter.setSigningKey("123"); // gunakan symmetric key
+            //converter.setSigningKey("123"); // gunakan symmetric key
+            KeyPair keyPair = new KeyStoreKeyFactory(
+                    new ClassPathResource("jwt.jks"), "rahasia".toCharArray())
+                    .getKeyPair("jwt");
+            converter.setKeyPair(keyPair);
             return converter;
         }
 
         @Override
         public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-            oauthServer.checkTokenAccess("hasAuthority('CLIENT')");
+            oauthServer.checkTokenAccess("hasAuthority('CLIENT')")
+                    .tokenKeyAccess("permitAll()");
         }
 
         @Override
