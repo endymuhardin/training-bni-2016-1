@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 @EnableWebSecurity
 public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
@@ -56,7 +56,7 @@ public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -69,7 +69,7 @@ public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
             AuthorizationServerConfigurerAdapter {
 
         private static final String RESOURCE_ID = "aplikasitraining";
-        
+
         @Autowired
         @Qualifier("authenticationManagerBean")
         private AuthenticationManager authenticationManager;
@@ -78,8 +78,15 @@ public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
         public void configure(AuthorizationServerEndpointsConfigurer endpoints)
                 throws Exception {
             endpoints
-                    .tokenStore(new InMemoryTokenStore())
+                    .accessTokenConverter(accessTokenConverter())
                     .authenticationManager(authenticationManager);
+        }
+
+        @Bean
+        public JwtAccessTokenConverter accessTokenConverter() {
+            JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+            converter.setSigningKey("123"); // gunakan symmetric key
+            return converter;
         }
 
         @Override
