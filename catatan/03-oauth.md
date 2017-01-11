@@ -45,7 +45,7 @@ Beberapa cara verifikasi token dari resource server ke authorization server:
    ```
 * Token yang didapatkan bisa dicek detailnya ke auth server dengan perintah berikut
 
-        curl -X POST -vu clientauthcode:123456 http://localhost:10000/oauth/check_token?token=adfba26b-a38a-44fe-ab64-7039931de4a9
+        curl -X POST -vu clientauthcode:123456 http://localhost:10000/auth/oauth/check_token?token=adfba26b-a38a-44fe-ab64-7039931de4a9
 
 * Hasilnya sebagai berikut
 
@@ -64,10 +64,57 @@ Beberapa cara verifikasi token dari resource server ke authorization server:
 
 ![Flow Implicit](img/oauth-implicit.jpg)
 
+* Mendapatkan `access_token`
+
+    curl http://localhost:10000/auth/oauth/authorize?client_id=jsclient&response_type=token&scope=write
+
+* Kita akan diredirect ke `http://example.com/#access_token=70322d66-6c76-4fe0-9786-622a9a314261&token_type=bearer&expires_in=86399`, sesuai dengan konfigurasi redirect_uri di konfigurasi client.
+
+* `access_token` bisa diparse langsung dari alamat URL tersebut.
+
 ### User Password ###
 
 ![Flow User Password](img/oauth-user-password.jpg)
 
+* Mendapatkan `access_token`
+
+    curl -X POST -vu clientapp:123456 http://localhost:10000/auth/oauth/token -H "Accept: application/json" -d "client_id=clientapp&grant_type=password&username=endy&password=123"
+
+* Perhatikan bahwa pada flow ini, kita langsung mengirim username dan password ke auth server. Artinya, user _menitipkan_ username/passwordnya kepada kita. Berbeda dengan flow sebelumnya yang mengharuskan user memasukkan sendiri username/passwordnya ke auth server.
+
 ### Client Credential ###
 
 ![Flow Client Credential](img/oauth-client-cred.jpg)
+
+* Mendapatkan `access_token`
+
+    curl -X POST -vu clientcred:123456 http://localhost:10000/auth/oauth/token -H "Accept: application/json" -d "client_id=clientcred&grant_type=client_credentials"
+
+* Hasilnya seperti ini
+
+    ```json
+    {
+      "access_token" : "75c5d29b-0b1d-4bc6-a999-896331d625b0",
+      "token_type" : "bearer",
+      "expires_in" : 43199,
+      "scope" : "trust"
+    }
+    ```
+
+* Perhatikan bahwa di flow ini, `client_id` dan `client_secret` langsung ditukarkan dengan `access_token`. Tidak ada keterlibatan user pada flow ini.
+
+* Bila kita cek tokennya
+
+    curl -X POST -vu clientcred:123456 http://localhost:10000/auth/oauth/check_token?token=75c5d29b-0b1d-4bc6-a999-896331d625b0
+
+* Hasilnya seperti ini
+
+    ```json
+    {
+      "aud" : [ "aplikasitraining" ],
+      "scope" : [ "trust" ],
+      "exp" : 1484186350,
+      "authorities" : [ "CLIENT" ],
+      "client_id" : "clientcred"
+    }
+    ```
