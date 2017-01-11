@@ -84,7 +84,7 @@ public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
 
         @Override
         public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-            oauthServer.checkTokenAccess("hasRole('CLIENT')");
+            oauthServer.checkTokenAccess("hasAuthority('CLIENT')");
         }
 
         @Override
@@ -93,6 +93,7 @@ public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
                     .inMemory()
                     .withClient("clientauthcode")
                     .secret("123456")
+                    .authorities("CLIENT")
                     .authorizedGrantTypes("authorization_code", "refresh_token")
                     .scopes("read", "write")
                     .resourceIds(RESOURCE_ID)
