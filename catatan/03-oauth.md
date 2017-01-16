@@ -240,3 +240,13 @@ Asymmetric key adalah pasangan public key dan private key. Private key hanya ada
 * Kita bisa verifikasi signaturenya di jwt.io seperti biasa. Copy paste public key dari `http://localhost:10000/auth/oauth/token_key` tadi ke kolom bawah. Jangan lupa ganti `\n` menjadi ganti baris (tekan Enter)
 
 ![Verifikasi Signature dengan Public Key](img/verifikasi-public-key.png)
+
+## Referensi ##
+
+* https://spring.io/guides/tutorials/spring-security-and-angular-js/
+* http://github.com/endymuhardin/belajar-springoauth2
+* https://github.com/spring-guides/tut-spring-security-and-angular-js/tree/master/oauth2
+* https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage
+* https://www.dinochiesa.net/?p=1388
+* https://futurestud.io/tutorials/oauth-2-on-android-with-retrofit
+* https://github.com/JakeWharton/u2020/blob/master/src/main/java/com/jakewharton/u2020/data/api/oauth/OauthManager.java
