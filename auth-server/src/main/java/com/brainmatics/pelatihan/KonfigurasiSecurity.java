@@ -134,7 +134,7 @@ public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
                     .scopes("read", "write")
                     .resourceIds(RESOURCE_ID)
                     .redirectUris("http://example.com")
-                    .accessTokenValiditySeconds(60 * 60 * 24) // token berlaku seharian, besok harus login ulang
+                    .accessTokenValiditySeconds(60 * 3) // token berlaku 3 menit
                     .autoApprove(true);
         }
     }
