@@ -250,3 +250,6 @@ Asymmetric key adalah pasangan public key dan private key. Private key hanya ada
 * https://www.dinochiesa.net/?p=1388
 * https://futurestud.io/tutorials/oauth-2-on-android-with-retrofit
 * https://github.com/JakeWharton/u2020/blob/master/src/main/java/com/jakewharton/u2020/data/api/oauth/OauthManager.java
+* https://developers.google.com/identity/protocols/OAuth2InstalledApp
+* https://developers.google.com/identity/protocols/OAuth2UserAgent
+* https://developers.google.com/identity/protocols/OAuth2ForDevices
