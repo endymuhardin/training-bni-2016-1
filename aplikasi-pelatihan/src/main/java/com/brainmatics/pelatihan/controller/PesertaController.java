@@ -4,8 +4,10 @@ import com.brainmatics.pelatihan.dao.InstitusiDao;
 import com.brainmatics.pelatihan.dao.PesertaDao;
 import com.brainmatics.pelatihan.entity.Institusi;
 import com.brainmatics.pelatihan.entity.Peserta;
+import java.util.ArrayList;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,10 +24,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class PesertaController {
+    
+    @Autowired 
+    @Qualifier("onlineTestClient")
+    private RestTemplate onlineTestClient;
     
     @Autowired private PesertaDao pesertaDao;
     @Autowired private InstitusiDao institusiDao;
@@ -33,6 +40,12 @@ public class PesertaController {
     @PreAuthorize("isAnonymous()")
     @RequestMapping("/peserta/registrasi/")
     public void registrasi(){}
+    
+    @RequestMapping("/api/peserta/{id}/")
+    @ResponseBody
+    public Peserta cariById(@PathVariable(name = "id") Peserta peserta){
+        return peserta;
+    }
     
     @RequestMapping(value = "/api/peserta/", method = RequestMethod.GET)
     @ResponseBody
@@ -47,10 +60,14 @@ public class PesertaController {
         pesertaDao.save(p);
     }
     
-    @RequestMapping("/api/peserta/{id}/")
+    @PreAuthorize("hasAuthority('EDIT_PESERTA')")
+    @RequestMapping("/api/peserta/{id}/nilai/")
     @ResponseBody
-    public Peserta cariById(@PathVariable(name = "id") Peserta peserta){
-        return peserta;
+    public Iterable<Object> nilaiPeserta(@PathVariable(name = "id") Peserta peserta){
+        if(peserta == null){
+            return new ArrayList<>();
+        }
+        return onlineTestClient.getForObject("http://localhost:9090/hasil/"+peserta.getId()+"/", Iterable.class);
     }
     
     @PreAuthorize("hasAuthority('VIEW_PESERTA')")
