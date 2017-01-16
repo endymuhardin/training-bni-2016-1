@@ -16,9 +16,13 @@ Beberapa flow yang tersedia:
 * User Password : digunakan bila kita mengijinkan user untuk menginputkan username dan passwordnya di aplikasi client. Ini biasanya dilakukan bila aplikasi client kita juga yang membuat, seperti misalnya aplikasi Twitter, Facebook, dsb yang dibuat sendiri oleh Twitter, Facebook, dsb.
 * Client Credential : digunakan untuk akses host to host antar aplikasi. Flow ini biasanya digunakan untuk fitur yang tidak spesifik ke user tertentu, misalnya trending topic di social media. Datanya global dan tidak terkait ke user tertentu.
 
-Beberapa cara verifikasi token dari resource server ke authorization server:
+Resource server perlu melakukan verifikasi token dan menerjemahkan token menjadi informasi tentang user (username, ijin akses, dan sebagainya).
 
-* Lewat HTTP request.
+Ada beberapa cara verifikasi token dari resource server ke authorization server:
+
+* Lewat HTTP request (dalam Spring Boot dikenal dengan istilah RemoteTokenStore)
+* Sharing Database (dengan Spring Boot, gunakan JdbcTokenStore). Contohnya bisa dilihat [di sini](http://stackoverflow.com/a/21071614)
+* JWT dengan Digital Signature (Spring Boot, gunakan JwtAccessTokenConverter)
 
 ### Authorization Code ###
 
