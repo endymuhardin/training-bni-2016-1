@@ -8,17 +8,36 @@ import com.brainmatics.pelatihan.entity.Instruktur;
 import com.brainmatics.pelatihan.entity.Kelas;
 import com.brainmatics.pelatihan.entity.Materi;
 import com.brainmatics.pelatihan.entity.Peserta;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +53,17 @@ public class KelasController {
     @Autowired private MateriDao materiDao;
     @Autowired private PesertaDao pesertaDao;
     @Autowired private KelasDao kelasDao;
+    
+    @Value("classpath:/report/detail-kelas.jrxml") 
+    private Resource templateReportKelas;
+    @Value("classpath:/report/sr-daftar-materi.jrxml") 
+    private Resource templateSubreportMateri;
+    @Value("classpath:/report/sr-daftar-peserta.jrxml") 
+    private Resource templateSubreportPeserta;
+    
+    private JasperReport reportKelas;
+    private JasperReport subreportMateri;
+    private JasperReport subreportPeserta;
     
     @ModelAttribute("daftarMateri")
     public Iterable<Materi> daftarMateri(){
@@ -161,5 +191,58 @@ public class KelasController {
         kelasDao.delete(kelas);
         status.setComplete();
         return "redirect:list";
+    }
+    
+    @RequestMapping(value = "/{kelas}/pdf", method = RequestMethod.GET)
+    public void cetakDetailKelas(@PathVariable("kelas") Kelas kelas, HttpServletResponse response){
+        try {
+            if(kelas == null) {
+                return;
+            }
+            response.setContentType("application/pdf");
+            
+            // header supaya memunculkan dialog download
+            response.setHeader("Content-Disposition", "Attachment; filename=kelas-"
+                    + kelas.getKode() +".pdf");
+            
+            JasperPrint reportSiapPrint = prepareJasperPrint(kelas);
+            JasperExportManager.exportReportToPdfStream(reportSiapPrint, response.getOutputStream());
+        } catch (JRException | IOException ex) {
+            Logger.getLogger(KelasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private JasperPrint prepareJasperPrint(Kelas kelas) throws JRException, IOException {
+        
+        Map<String, Object> params = new HashMap<>();
+        params.put("kelas", kelas);
+        params.put("subreportMateri", getSubreportMateri());
+        params.put("subreportPeserta", getSubreportPeserta());
+        params.put("dsSubreportMateri", new JRBeanCollectionDataSource(kelas.getDaftarMateri()));
+        params.put("dsSubreportPeserta", new JRBeanCollectionDataSource(kelas.getDaftarPeserta()));
+        
+        JasperPrint reportSiapPrint = JasperFillManager.fillReport(getReportKelas(), params, new JREmptyDataSource());
+        return reportSiapPrint;
+    }
+
+    private JasperReport getReportKelas() throws IOException, JRException{
+        if(reportKelas == null){
+            reportKelas = JasperCompileManager.compileReport(templateReportKelas.getInputStream());
+        }
+        return reportKelas;
+    }
+
+    private JasperReport getSubreportMateri() throws IOException, JRException{
+        if(subreportMateri == null){
+            subreportMateri = JasperCompileManager.compileReport(templateSubreportMateri.getInputStream());
+        }
+        return subreportMateri;
+    }
+    
+    private JasperReport getSubreportPeserta() throws IOException, JRException{
+        if(subreportPeserta == null){
+            subreportPeserta = JasperCompileManager.compileReport(templateSubreportPeserta.getInputStream());
+        }
+        return subreportPeserta;
     }
 }
