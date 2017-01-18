@@ -4,11 +4,24 @@ import com.brainmatics.pelatihan.dao.InstitusiDao;
 import com.brainmatics.pelatihan.dao.PesertaDao;
 import com.brainmatics.pelatihan.entity.Institusi;
 import com.brainmatics.pelatihan.entity.Peserta;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -16,7 +29,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -41,6 +53,8 @@ public class PesertaController {
     
     @Autowired private PesertaDao pesertaDao;
     @Autowired private InstitusiDao institusiDao;
+    
+    private JasperReport reportPesertaHasilCompile;
     
     @PreAuthorize("isAnonymous()")
     @RequestMapping("/peserta/registrasi/")
@@ -122,7 +136,7 @@ public class PesertaController {
     
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/report/peserta", method = RequestMethod.GET)
-    public ModelMap reportPeserta(Authentication currentUser, HttpServletResponse response){
+    public ModelMap reportPeserta(Authentication currentUser){
         ModelMap mm = new ModelMap();
         Iterable<Peserta> dataPeserta = pesertaDao.findAll();
         
@@ -132,6 +146,62 @@ public class PesertaController {
         mm.addAttribute("userCetak", currentUser.getPrincipal());
         
         return mm;
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/peserta.pdf", method = RequestMethod.GET)
+    public void daftarPesertaPdf(Authentication currentUser, HttpServletResponse response){
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            
+            response.setContentType("application/pdf");
+            // header supaya memunculkan dialog download
+            response.setHeader("Content-Disposition", "Attachment; filename=daftar-peserta-"
+                    + formatter.format(new Date())+".pdf");
+            
+            Map<String, Object> params = new HashMap<>();
+            params.put("userCetak", currentUser.getPrincipal());
+            params.put("tanggalCetak", new Date());
+            
+            List<Peserta> daftarPeserta = new ArrayList<>();
+            Iterable<Peserta> iterablePeserta = pesertaDao.findAll();
+            
+            // versi lambda (Java 8 only)
+            iterablePeserta.forEach(daftarPeserta :: add);
+            
+            // versi non lambda
+            /*
+            Iterator<Peserta> iteratorPeserta = iterablePeserta.iterator();
+            while(iteratorPeserta.hasNext()){
+            Peserta p = iteratorPeserta.next();
+            daftarPeserta.add(p);
+            }
+            */
+            
+            JRBeanCollectionDataSource data = new JRBeanCollectionDataSource(daftarPeserta);
+            JasperPrint reportSiapPrint = JasperFillManager.fillReport(getReportPeserta(), params, data);
+            JasperExportManager.exportReportToPdfStream(reportSiapPrint, response.getOutputStream());
+        } catch (JRException ex) {
+            Logger.getLogger(PesertaController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PesertaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    private JasperReport getReportPeserta(){
+        // kalau belum pernah compile, compile dulu
+        if(reportPesertaHasilCompile == null){
+            try {
+                reportPesertaHasilCompile = JasperCompileManager
+                        .compileReport(this.getClass().getResourceAsStream("/report/peserta.jrxml"));
+            } catch (JRException ex) {
+                Logger.getLogger(PesertaController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        // kalau sudah pernah compile, langsung return
+        return reportPesertaHasilCompile;
     }
     
     private void prosesFoto(MultipartFile foto){
