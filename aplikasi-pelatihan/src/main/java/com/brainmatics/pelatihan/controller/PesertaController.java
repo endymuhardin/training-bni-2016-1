@@ -152,41 +152,39 @@ public class PesertaController {
     @RequestMapping(value = "/peserta.pdf", method = RequestMethod.GET)
     public void daftarPesertaPdf(Authentication currentUser, HttpServletResponse response){
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-            
-            response.setContentType("application/pdf");
-            // header supaya memunculkan dialog download
-            response.setHeader("Content-Disposition", "Attachment; filename=daftar-peserta-"
-                    + formatter.format(new Date())+".pdf");
-            
-            Map<String, Object> params = new HashMap<>();
-            params.put("userCetak", currentUser.getPrincipal());
-            params.put("tanggalCetak", new Date());
-            
-            List<Peserta> daftarPeserta = new ArrayList<>();
-            Iterable<Peserta> iterablePeserta = pesertaDao.findAll();
-            
-            // versi lambda (Java 8 only)
-            iterablePeserta.forEach(daftarPeserta :: add);
-            
-            // versi non lambda
-            /*
-            Iterator<Peserta> iteratorPeserta = iterablePeserta.iterator();
-            while(iteratorPeserta.hasNext()){
-            Peserta p = iteratorPeserta.next();
-            daftarPeserta.add(p);
-            }
-            */
-            
-            JRBeanCollectionDataSource data = new JRBeanCollectionDataSource(daftarPeserta);
-            JasperPrint reportSiapPrint = JasperFillManager.fillReport(getReportPeserta(), params, data);
+            JasperPrint reportSiapPrint = prepareJasperPrint(response, currentUser);
             JasperExportManager.exportReportToPdfStream(reportSiapPrint, response.getOutputStream());
-        } catch (JRException ex) {
-            Logger.getLogger(PesertaController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (JRException | IOException ex) {
             Logger.getLogger(PesertaController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+
+    private JasperPrint prepareJasperPrint(HttpServletResponse response, Authentication currentUser) throws JRException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        response.setContentType("application/pdf");
+        // header supaya memunculkan dialog download
+        response.setHeader("Content-Disposition", "Attachment; filename=daftar-peserta-"
+                + formatter.format(new Date())+".pdf");
+        Map<String, Object> params = new HashMap<>();
+        params.put("userCetak", currentUser.getPrincipal());
+        params.put("tanggalCetak", new Date());
+        List<Peserta> daftarPeserta = new ArrayList<>();
+        Iterable<Peserta> iterablePeserta = pesertaDao.findAll();
+        // versi lambda (Java 8 only)
+        iterablePeserta.forEach(daftarPeserta :: add);
+        // versi non lambda
+        /*
+        Iterator<Peserta> iteratorPeserta = iterablePeserta.iterator();
+        while(iteratorPeserta.hasNext()){
+        Peserta p = iteratorPeserta.next();
+        daftarPeserta.add(p);
+        }
+        */
+        
+        JRBeanCollectionDataSource data = new JRBeanCollectionDataSource(daftarPeserta);
+        JasperPrint reportSiapPrint = JasperFillManager.fillReport(getReportPeserta(), params, data);
+        return reportSiapPrint;
     }
     
     private JasperReport getReportPeserta(){
