@@ -22,6 +22,9 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -152,20 +155,44 @@ public class PesertaController {
     @RequestMapping(value = "/peserta.pdf", method = RequestMethod.GET)
     public void daftarPesertaPdf(Authentication currentUser, HttpServletResponse response){
         try {
-            JasperPrint reportSiapPrint = prepareJasperPrint(response, currentUser);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            response.setContentType("application/pdf");
+            // header supaya memunculkan dialog download
+            response.setHeader("Content-Disposition", "Attachment; filename=daftar-peserta-"
+                    + formatter.format(new Date())+".pdf");
+            JasperPrint reportSiapPrint = prepareJasperPrint(currentUser);
             JasperExportManager.exportReportToPdfStream(reportSiapPrint, response.getOutputStream());
         } catch (JRException | IOException ex) {
             Logger.getLogger(PesertaController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
+    
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/peserta.xlsx", method = RequestMethod.GET)
+    public void daftarPesertaXls(Authentication currentUser, HttpServletResponse response){
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            response.setContentType("application/vnd.ms-excel");
+            // header supaya memunculkan dialog download
+            response.setHeader("Content-Disposition", "Attachment; filename=daftar-peserta-"
+                    + formatter.format(new Date())+".xlsx");
+            
+            JasperPrint reportSiapPrint = prepareJasperPrint(currentUser);
+            
+            JRXlsxExporter exporter = new JRXlsxExporter();
 
-    private JasperPrint prepareJasperPrint(HttpServletResponse response, Authentication currentUser) throws JRException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-        response.setContentType("application/pdf");
-        // header supaya memunculkan dialog download
-        response.setHeader("Content-Disposition", "Attachment; filename=daftar-peserta-"
-                + formatter.format(new Date())+".pdf");
+            exporter.setExporterInput(new SimpleExporterInput(reportSiapPrint));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(response.getOutputStream()));
+            exporter.exportReport();
+        } catch (JRException | IOException ex) {
+            Logger.getLogger(PesertaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
+    private JasperPrint prepareJasperPrint(Authentication currentUser) throws JRException {
+        
         Map<String, Object> params = new HashMap<>();
         params.put("userCetak", currentUser.getPrincipal());
         params.put("tanggalCetak", new Date());
