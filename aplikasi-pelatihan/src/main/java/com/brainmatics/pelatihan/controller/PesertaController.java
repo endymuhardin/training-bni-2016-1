@@ -5,6 +5,9 @@ import com.brainmatics.pelatihan.dao.PesertaDao;
 import com.brainmatics.pelatihan.entity.Institusi;
 import com.brainmatics.pelatihan.entity.Peserta;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -113,6 +118,20 @@ public class PesertaController {
         pesertaDao.save(p);
         status.setComplete();
         return "redirect:/peserta/list/";
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/report/peserta", method = RequestMethod.GET)
+    public ModelMap reportPeserta(Authentication currentUser, HttpServletResponse response){
+        ModelMap mm = new ModelMap();
+        Iterable<Peserta> dataPeserta = pesertaDao.findAll();
+        
+        mm.addAttribute("format", "pdf");
+        mm.addAttribute("dataDalamReport", dataPeserta);
+        mm.addAttribute("tanggalCetak", new Date());
+        mm.addAttribute("userCetak", currentUser.getPrincipal());
+        
+        return mm;
     }
     
     private void prosesFoto(MultipartFile foto){

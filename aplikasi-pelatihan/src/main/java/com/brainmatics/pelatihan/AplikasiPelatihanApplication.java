@@ -10,6 +10,8 @@ import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsViewResolver;
 import org.thymeleaf.dialect.springdata.SpringDataDialect;
 
 @SpringBootApplication
@@ -33,5 +35,19 @@ public class AplikasiPelatihanApplication {
     public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
             OAuth2ProtectedResourceDetails details) {
         return new OAuth2RestTemplate(details, oauth2ClientContext);
+    }
+    
+    @Bean
+    public JasperReportsViewResolver jasperResolver(){
+        JasperReportsViewResolver resolver = new JasperReportsViewResolver();
+        
+        resolver.setViewClass(JasperReportsMultiFormatView.class);
+        resolver.setOrder(0); // cari template jasper dulu, kalau tidak ketemu, baru cari template thymeleaf
+        resolver.setViewNames("report/*");
+        resolver.setPrefix("classpath:/");
+        resolver.setSuffix(".jrxml");
+        resolver.setReportDataKey("dataDalamReport");
+        
+        return resolver;
     }
 }
