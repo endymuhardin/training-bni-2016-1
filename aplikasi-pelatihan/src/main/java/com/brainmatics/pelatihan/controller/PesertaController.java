@@ -35,6 +35,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,6 +70,7 @@ public class PesertaController {
         return peserta;
     }
     
+    @CrossOrigin(origins = "http://localhost:20000")
     @RequestMapping(value = "/api/peserta/", method = RequestMethod.GET)
     @ResponseBody
     public Page<Peserta> semuaPeserta(Pageable page){

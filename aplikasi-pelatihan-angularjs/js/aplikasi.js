@@ -16,7 +16,7 @@ aplikasi.controller('DaftarPesertaController', function DaftarPesertaController(
 	};
 
 	// get data dari server
-	$http.get('api/peserta/').then(function(response) {
+	$http.get('http://localhost:8080/api/peserta/').then(function(response) {
         $ctrl.daftarPeserta = response.data.content;
     });
 });
