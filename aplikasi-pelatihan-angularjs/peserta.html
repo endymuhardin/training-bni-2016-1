@@ -20,6 +20,7 @@
 	<link href="css/aplikasi.css" rel="stylesheet">
 
 	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
@@ -56,7 +57,7 @@
 		<h1>Daftar Peserta</h1>
 
 		<p />
-		<button class="btn btn-primary">Tambah Peserta</button>
+		<button class="btn btn-primary" data-toggle="modal" data-target="#formPesertaDialog">Tambah Peserta</button>
 		<p />
 		<table class="table table-condensed table-striped table-hovered">
 			<thead>
@@ -100,6 +101,23 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<div class="modal fade" id="formPesertaDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="myModalLabel">Form Peserta</h4>
+					</div>
+					<div class="modal-body">
+						...
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 	</div><!-- /.container -->
 
