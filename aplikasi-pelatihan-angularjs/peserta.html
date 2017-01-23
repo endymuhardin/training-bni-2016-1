@@ -55,7 +55,7 @@
 		</div>
 	</nav>
 
-	<div class="container" ng-controller="DaftarPesertaController">
+	<div class="container" ng-controller="DaftarPesertaController as $ctrl">
 
 		<h1>Daftar Peserta</h1>
 
@@ -72,7 +72,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="p in daftarPeserta">
+				<tr ng-repeat="p in $ctrl.daftarPeserta">
 					<td>{{ p.nama }}</td>
 					<td>{{ p.email }}</td>
 					<td>{{ p.nomorHandphone }}</td>

@@ -7,8 +7,9 @@ aplikasi.controller('DaftarEmailController', function DaftarEmailController($sco
 	];
 });
 
-aplikasi.controller('DaftarPesertaController', function DaftarPesertaController($scope){
-	$scope.daftarPeserta = [
+aplikasi.controller('DaftarPesertaController', function DaftarPesertaController(){
+	var $ctrl = this;
+	$ctrl.daftarPeserta = [
 		{nama: "Peserta 001", email: "p001@gmail.com", nomorHandphone: "0876543211", tanggalLahir: new Date()},
 		{nama: "Peserta 002", email: "p002@gmail.com", nomorHandphone: "0876543212", tanggalLahir: new Date()},
 		{nama: "Peserta 003", email: "p003@gmail.com", nomorHandphone: "0876543213", tanggalLahir: new Date()},
@@ -16,9 +17,8 @@ aplikasi.controller('DaftarPesertaController', function DaftarPesertaController(
 		{nama: "Peserta 005", email: "p005@gmail.com", nomorHandphone: "0876543215", tanggalLahir: new Date()}
 	];
 
-	$scope.editPeserta = function(p){
+	$ctrl.editPeserta = function(p){
 		console.log("Edit peserta ");
 		console.log(p);
-		$scope.showModal = true;
 	};
 });
