@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 
 const ROUTES: Route[] = [
 	{path: 'about', component: AboutComponent},
+	{path: 'peserta', redirectTo: '/peserta', pathMatch: 'full'},
 	{path: '**', component: HomeComponent}
 ];
 
