@@ -22,6 +22,11 @@ export class PesertaService {
 
   }
 
+  simpanPeserta(p : Peserta) : void {
+	  console.log("Menyimpan data peserta");
+	  console.log(p);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error); // for demo purposes only
     return Promise.reject(error.message || error);

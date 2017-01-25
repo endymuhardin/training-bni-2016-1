@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }   from '@angular/router';
 
+import { PesertaService} from '../peserta.service';
+import { Peserta } from '../peserta.model';
+
 @Component({
   selector: 'peserta-form',
   templateUrl: './peserta-form.component.html',
@@ -8,15 +11,15 @@ import { Router }   from '@angular/router';
 })
 export class PesertaFormComponent implements OnInit {
 
-  peserta = {};
+  peserta : Peserta = new Peserta(null, null, null, null);
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private service : PesertaService) { }
 
   ngOnInit() {
   }
 
   simpan() {
-	  this.router.navigate(['/peserta']);
+	  this.service.simpanPeserta(this.peserta);
   }
 
 }
