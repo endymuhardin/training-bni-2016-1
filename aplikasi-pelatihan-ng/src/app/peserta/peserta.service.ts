@@ -1,19 +1,29 @@
 import { Injectable } from '@angular/core';
 
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+
 import { Peserta } from './peserta.model';
 
 @Injectable()
 export class PesertaService {
 
-  constructor() { }
+  serverUrl : string = "/api/peserta/";
+
+  constructor(private httpClient: Http) { }
 
   ambilDataPeserta() : Promise<Peserta[]> {
-	  console.log("menjalankan function ambilDataPeserta")
-	  let data : Peserta[] = [
-		  new Peserta('Peserta 001', 'p001@coba.com', '081234567891', new Date()),
-		  new Peserta('Peserta 002', 'p002@coba.com', '081234567892', new Date()),
-		  new Peserta('Peserta 003', 'p003@coba.com', '081234567893', new Date())
-	  ];
-	  return Promise.resolve(data);
-  };
+	  console.log("menjalankan function ambilDataPeserta");
+
+	  return this.httpClient.get(this.serverUrl)
+	  .toPromise()
+	  .then(response => response.json().content as Peserta[])
+      .catch(this.handleError);
+
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    return Promise.reject(error.message || error);
+  }
 }
