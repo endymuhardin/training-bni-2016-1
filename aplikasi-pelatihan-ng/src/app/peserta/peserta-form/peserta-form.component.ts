@@ -19,7 +19,12 @@ export class PesertaFormComponent implements OnInit {
   }
 
   simpan() {
-	  this.service.simpanPeserta(this.peserta);
+	  this.service.simpanPeserta(this.peserta)
+	  .then(response => {
+		  console.log(response);
+		  this.router.navigate(['peserta']);
+	  })
+	  .catch(response => console.log(response));
   }
 
 }

@@ -22,9 +22,11 @@ export class PesertaService {
 
   }
 
-  simpanPeserta(p : Peserta) : void {
+  simpanPeserta(p : Peserta) : Promise<any> {
 	  console.log("Menyimpan data peserta");
 	  console.log(p);
+	  return this.httpClient.post(this.serverUrl, p, null)
+	  .toPromise();
   }
 
   private handleError(error: any): Promise<any> {
