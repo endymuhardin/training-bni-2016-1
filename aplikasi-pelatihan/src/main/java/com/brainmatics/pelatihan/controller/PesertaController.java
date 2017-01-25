@@ -77,7 +77,7 @@ public class PesertaController {
         return pesertaDao.findAll(page);
     }
     
-    @PreAuthorize("hasAuthority('EDIT_PESERTA')")
+    //@PreAuthorize("hasAuthority('EDIT_PESERTA')")
     @RequestMapping(value = "/api/peserta/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void simpanPeserta(@RequestBody @Valid Peserta p){
