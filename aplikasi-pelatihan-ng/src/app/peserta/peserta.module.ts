@@ -5,7 +5,8 @@ import { RouterModule, Route }   from '@angular/router';
 
 import { PesertaListComponent } from './peserta-list/peserta-list.component';
 import { PesertaFormComponent } from './peserta-form/peserta-form.component';
-
+import { Peserta } from './peserta.model';
+import { PesertaService } from './peserta.service';
 
 const ROUTES_PESERTA: Route[] = [
 	{path: 'peserta/form', component: PesertaFormComponent},
@@ -18,6 +19,7 @@ const ROUTES_PESERTA: Route[] = [
 	RouterModule.forChild(ROUTES_PESERTA)
   ],
   declarations: [PesertaListComponent, PesertaFormComponent],
-  exports: [ PesertaListComponent ]
+  exports: [ PesertaListComponent ],
+  providers: [ PesertaService ]
 })
 export class PesertaModule { }

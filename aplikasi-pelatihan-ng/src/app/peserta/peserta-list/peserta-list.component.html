@@ -1,9 +1,33 @@
 <h1>Daftar Peserta</h1>
 
-<p>
+<p></p>
 
 <a class="btn btn-default btn-primary" routerLink="form">Tambah Peserta</a>
 
-<p>
+<p></p>
 
-Tabel peserta nanti dipasang di sini
+<div *ngIf="!dataPeserta">Data Peserta tidak ada</div>
+
+<table class="table table-striped table-hovered" *ngIf="dataPeserta">
+	<thead>
+		<tr>
+			<th>Nama</th>
+			<th>Email</th>
+			<th>No Handphone</th>
+			<th>Tanggal Lahir</th>
+			<th>&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let p of dataPeserta">
+			<td>{{p.nama}}</td>
+			<td>{{p.email}}</td>
+			<td>{{p.nomorHandphone}}</td>
+			<td>{{p.tanggalLahir}}</td>
+			<td>
+				<button class="btn btn-sm btn-default">edit</button>
+				<button class="btn btn-sm btn-default">hapus</button>
+			</td>
+		</tr>
+	</tbody>
+</table>

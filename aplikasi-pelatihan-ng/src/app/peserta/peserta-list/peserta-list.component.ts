@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Peserta } from '../peserta.model';
+import { PesertaService } from '../peserta.service';
+
 @Component({
   selector: 'peserta-list',
   templateUrl: './peserta-list.component.html',
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PesertaListComponent implements OnInit {
 
-  constructor() { }
+  dataPeserta : Peserta[] = [];
+
+  constructor(private service : PesertaService) {
+
+  }
 
   ngOnInit() {
+	  this.service.ambilDataPeserta().then(
+		  data => {
+			  this.dataPeserta = data;
+			  console.log("Jumlah data dari service "+data.length);
+		  }
+	  );
+
   }
 
 }
