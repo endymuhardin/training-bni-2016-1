@@ -8,6 +8,8 @@ import { Router }   from '@angular/router';
 })
 export class PesertaFormComponent implements OnInit {
 
+  peserta = {};
+
   constructor(private router: Router) { }
 
   ngOnInit() {

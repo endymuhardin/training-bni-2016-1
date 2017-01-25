@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { RouterModule, Route }   from '@angular/router';
 
@@ -16,6 +17,7 @@ const ROUTES_PESERTA: Route[] = [
 @NgModule({
   imports: [
     CommonModule,
+	FormsModule,
 	RouterModule.forChild(ROUTES_PESERTA)
   ],
   declarations: [PesertaListComponent, PesertaFormComponent],
